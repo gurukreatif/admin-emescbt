@@ -168,8 +168,8 @@ code,pre,.mono{font-family:'DM Mono',monospace}
 /* ════════════════════════════════════════════════
    APP LAYOUT
 ════════════════════════════════════════════════ */
-#screen-app{display:none;min-height:100vh}
-.layout{display:flex;min-height:100vh}
+#screen-app{display:none;min-height:100vh;width:100%}
+.layout{display:flex;min-height:100vh;width:100%}
 
 /* ── Sidebar — white, bordered right ── */
 .sidebar{
@@ -208,27 +208,34 @@ code,pre,.mono{font-family:'DM Mono',monospace}
   border-left-color:var(--sb-active-border);font-weight:600
 }
 .sb-item.active i{color:var(--accent);opacity:1}
-.sb-footer{padding:12px 10px 16px;border-top:1px solid var(--sb-border)}
-.sb-user{display:flex;align-items:center;gap:8px}
-.sb-user-avatar{
+.sb-signout{display:none}
+
+/* ── Global Topbar ── */
+.global-topbar{
+  position:fixed;top:0;left:var(--sidebar-w);right:0;height:52px;
+  background:var(--white);border-bottom:1px solid var(--border);
+  display:flex;align-items:center;justify-content:flex-end;
+  padding:0 28px;z-index:90;box-shadow:var(--shadow-xs)
+}
+.global-topbar-right{display:flex;align-items:center;gap:12px}
+.gtb-user{display:flex;align-items:center;gap:8px}
+.gtb-avatar{
   width:30px;height:30px;border-radius:var(--r8);background:var(--accent);
   display:flex;align-items:center;justify-content:center;
-  font-size:11px;color:#fff;font-weight:700;flex-shrink:0
+  font-size:12px;color:#fff;font-weight:700;flex-shrink:0
 }
-.sb-user-email{
-  font-size:11px;color:var(--mute);flex:1;min-width:0;
-  overflow:hidden;text-overflow:ellipsis;white-space:nowrap;font-weight:500
+.gtb-email{font-size:12px;color:var(--mute);font-weight:500}
+.gtb-signout{
+  display:inline-flex;align-items:center;gap:6px;
+  padding:6px 12px;border-radius:var(--r8);background:var(--red-bg);
+  color:var(--red-text);border:1px solid var(--red-border);
+  font-family:'Plus Jakarta Sans',sans-serif;font-size:12px;font-weight:600;
+  cursor:pointer;transition:all .15s
 }
-.sb-signout{
-  width:26px;height:26px;border-radius:var(--r6);background:transparent;
-  border:1px solid var(--border);color:var(--mute);cursor:pointer;
-  display:flex;align-items:center;justify-content:center;font-size:11px;
-  transition:all .12s;flex-shrink:0
-}
-.sb-signout:hover{background:var(--red-bg);color:var(--red);border-color:var(--red-border)}
+.gtb-signout:hover{background:#fecaca}
 
 /* ── Main content area ── */
-.main{margin-left:var(--sidebar-w);flex:1;min-width:0;padding:32px 36px;width:calc(100% - var(--sidebar-w))}
+.main{margin-left:var(--sidebar-w);flex:1;min-width:0;padding:84px 36px 32px;overflow-x:hidden}
 .topbar{
   display:flex;align-items:flex-start;justify-content:space-between;
   margin-bottom:28px;gap:16px;flex-wrap:wrap;
@@ -574,14 +581,20 @@ table.tbl td{padding:11px 14px;vertical-align:middle}
         <div class="sb-section">Lainnya</div>
         <div class="sb-item" onclick="goPage('pengaturan',this)"><i class="fa-solid fa-gear"></i> Pengaturan</div>
       </nav>
-      <div class="sb-footer">
-        <div class="sb-user">
-          <div class="sb-user-avatar">A</div>
-          <div class="sb-user-email" id="user-email"></div>
-          <button class="sb-signout" onclick="doSignOut()" title="Keluar"><i class="fa-solid fa-arrow-right-from-bracket"></i></button>
-        </div>
-      </div>
     </aside>
+
+    <!-- Global Topbar -->
+    <div class="global-topbar">
+      <div class="global-topbar-right">
+        <div class="gtb-user">
+          <div class="gtb-avatar">A</div>
+          <div class="gtb-email" id="user-email"></div>
+        </div>
+        <button class="gtb-signout" onclick="doSignOut()" title="Keluar">
+          <i class="fa-solid fa-arrow-right-from-bracket"></i> Keluar
+        </button>
+      </div>
+    </div>
 
     <!-- Main content -->
     <main class="main">
