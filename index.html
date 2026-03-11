@@ -672,8 +672,8 @@ table.tbl td{padding:11px 14px;vertical-align:middle}
           </div>
           <div class="tbl-wrap">
             <table class="tbl">
-              <thead><tr><th>Nama Reseller</th><th>Kode Unik</th><th>Nomor WA</th><th>Kota</th><th>Bergabung</th><th>Aksi</th></tr></thead>
-              <tbody id="reseller-tbody"><tr class="loading-row"><td colspan="6"><span class="spinner"></span> Memuat...</td></tr></tbody>
+              <thead><tr><th>Nama Reseller</th><th>Kode Unik</th><th>Nomor WA</th><th>Kota</th><th>Link Reseller</th><th>Bergabung</th><th>Aksi</th></tr></thead>
+              <tbody id="reseller-tbody"><tr class="loading-row"><td colspan="7"><span class="spinner"></span> Memuat...</td></tr></tbody>
             </table>
           </div>
         </div>
@@ -1136,19 +1136,24 @@ function updateStats() {
 // ── Reseller table ────────────────────────────────────────
 function renderResellerTable() {
   var tb = document.getElementById('reseller-tbody');
+  var domain = (window._fb && window._fb.LANDING_DOMAIN) || 'https://sems.my.id';
   if (!_resellers.length) {
-    tb.innerHTML='<tr><td colspan="6"><div class="empty"><i class="fa-solid fa-users"></i><p>Belum ada reseller. Klik "+ Tambah Reseller"</p></div></td></tr>'; return;
+    tb.innerHTML='<tr><td colspan="7"><div class="empty"><i class="fa-solid fa-users"></i><p>Belum ada reseller. Klik "+ Tambah Reseller"</p></div></td></tr>'; return;
   }
   tb.innerHTML = _resellers.map(function(r) {
+    var url = domain + '/?ref=' + r.code;
     return '<tr>'+
       '<td><div class="td-name">'+escH(r.nama)+'</div>'+
         (r.email?'<div class="text-mute">'+escH(r.email)+'</div>':'')+'</td>'+
       '<td><span class="td-code">'+escH(r.code)+'</span></td>'+
       '<td><span class="td-wa">'+escH(r.wa)+'</span></td>'+
       '<td>'+(r.kota?escH(r.kota):'<span class="text-mute">—</span>')+'</td>'+
+      '<td><div style="display:flex;align-items:center;gap:6px;max-width:280px">'+
+        '<span class="text-mute" style="font-size:11.5px;font-family:\'DM Mono\',monospace;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;flex:1" title="'+escH(url)+'">'+escH(url)+'</span>'+
+        '<button class="btn btn-secondary btn-xs btn-copy" onclick="copyLinkDirect(\''+escH(url)+'\',this)" title="Salin link"><i class="fa-solid fa-copy"></i></button>'+
+      '</div></td>'+
       '<td class="text-mute">'+fmtTgl(r.createdAt)+'</td>'+
       '<td><div class="td-actions">'+
-        '<button class="btn btn-secondary btn-xs" onclick="openLinkModal(\''+r.id+'\')"><i class="fa-solid fa-link"></i> Link</button>'+
         '<button class="btn btn-ghost btn-xs" onclick="openResellerModal(\''+r.id+'\')"><i class="fa-solid fa-pen"></i></button>'+
         '<button class="btn btn-danger btn-xs" onclick="deleteReseller(\''+r.id+'\')"><i class="fa-solid fa-trash"></i></button>'+
       '</div></td>'+
@@ -1595,6 +1600,21 @@ function copyAllSnippets() {
     return '  // '+r.nama+'\n  \''+r.code+'\': {\n    nama  : \''+r.nama+'\',\n    wa    : \''+r.wa+'\',\n    label : \''+r.label+'\'\n  },';
   }).join('\n\n');
   copyText(raw, 'Semua snippet disalin ('+_resellers.length+' reseller) ✓');
+}
+
+function copyLinkDirect(url, btn) {
+  navigator.clipboard.writeText(url).then(function() {
+    btn.classList.add('copied');
+    btn.innerHTML = '<i class="fa-solid fa-check"></i>';
+    toast('Link disalin ✓');
+    setTimeout(function(){ btn.classList.remove('copied'); btn.innerHTML='<i class="fa-solid fa-copy"></i>'; }, 2000);
+  }).catch(function() {
+    var ta = document.createElement('textarea'); ta.value = url;
+    ta.style.position='fixed'; ta.style.opacity='0';
+    document.body.appendChild(ta); ta.select(); document.execCommand('copy');
+    document.body.removeChild(ta);
+    toast('Link disalin ✓');
+  });
 }
 
 // ── Modal helpers ─────────────────────────────────────────
