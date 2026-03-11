@@ -30,7 +30,7 @@ const firebaseConfig = {
 };
 
 // ── Email owner yang diizinkan login ──────────────────────
-const OWNER_EMAIL = "admin@emescbt.com";
+const OWNER_EMAIL = "GANTI_EMAIL_ANDA@gmail.com";
 
 // ── Domain landing page (untuk generate link reseller) ────
 const LANDING_DOMAIN = "https://sems.my.id";
@@ -50,7 +50,7 @@ window._fb = { auth, db, collection, doc, addDoc, setDoc, updateDoc, deleteDoc,
 onAuthStateChanged(auth, function(user) {
   if (user && user.email === OWNER_EMAIL) {
     document.getElementById('screen-login').style.display  = 'none';
-    document.getElementById('screen-app').style.display    = '';
+    document.getElementById('screen-app').style.display    = 'flex';
     document.getElementById('user-email').textContent = user.email;
     window.loadAll();
   } else {
