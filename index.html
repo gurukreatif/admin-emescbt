@@ -4,6 +4,7 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>Emes CBT — Admin Panel</title>
+<link rel="icon" href="https://i.imgur.com/dYwR4Jp.png">
 <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@300;400;500;600;700;800&family=DM+Mono:wght@400;500&display=swap" rel="stylesheet">
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
 
@@ -227,7 +228,7 @@ code,pre,.mono{font-family:'DM Mono',monospace}
 .sb-signout:hover{background:var(--red-bg);color:var(--red);border-color:var(--red-border)}
 
 /* ── Main content area ── */
-.main{margin-left:var(--sidebar-w);flex:1;min-width:0;padding:32px 36px;max-width:1280px}
+.main{margin-left:var(--sidebar-w);flex:1;min-width:0;padding:32px 36px;width:calc(100% - var(--sidebar-w))}
 .topbar{
   display:flex;align-items:flex-start;justify-content:space-between;
   margin-bottom:28px;gap:16px;flex-wrap:wrap;
@@ -530,7 +531,7 @@ table.tbl td{padding:11px 14px;vertical-align:middle}
 <div id="screen-login">
   <div class="login-card">
     <div class="login-logo">
-      <div class="login-logo-icon">🎓</div>
+      <div class="login-logo-icon"><img src="https://i.imgur.com/dYwR4Jp.png" style="width:26px;height:26px;object-fit:contain;filter:brightness(0) invert(1)"></div>
       <div>
         <div class="login-logo-name">Emes CBT</div>
         <div class="login-logo-sub">Admin Panel</div>
@@ -558,7 +559,7 @@ table.tbl td{padding:11px 14px;vertical-align:middle}
     <!-- Sidebar -->
     <aside class="sidebar" id="sidebar">
       <div class="sb-logo">
-        <div class="sb-logo-icon">🎓</div>
+        <div class="sb-logo-icon"><img src="https://i.imgur.com/dYwR4Jp.png" style="width:20px;height:20px;object-fit:contain;filter:brightness(0) invert(1)"></div>
         <div>
           <div class="sb-logo-name">Emes CBT</div>
           <div class="sb-logo-sub">Admin Panel</div>
@@ -645,7 +646,7 @@ table.tbl td{padding:11px 14px;vertical-align:middle}
 
         <div class="alert alert-info">
           <i class="fa-solid fa-circle-info"></i>
-          <div>Setelah menambah reseller, <strong>copy snippet</strong> dan paste ke dalam <code>const RESELLERS = {…}</code> di <code>index.html</code>, lalu commit ke GitHub agar link reseller aktif di landing page.</div>
+          <div>Reseller yang ditambahkan di sini <strong>otomatis aktif</strong> di landing page — tidak perlu edit kode apapun.</div>
         </div>
 
         <div class="panel">
@@ -827,16 +828,15 @@ table.tbl td{padding:11px 14px;vertical-align:middle}
         <div class="panel">
           <div class="panel-head">
             <div class="ph-left">
-              <div class="ph-icon phi-blue"><i class="fa-solid fa-code"></i></div>
-              <div><div class="panel-title">Snippet index.html</div><div class="panel-sub">Copy semua reseller ke dalam const RESELLERS di index.html</div></div>
+              <div class="ph-icon phi-green"><i class="fa-solid fa-database"></i></div>
+              <div><div class="panel-title">Integrasi Firestore</div><div class="panel-sub">Data reseller tersinkron otomatis ke landing page</div></div>
             </div>
           </div>
           <div class="panel-body">
-            <div class="alert alert-warn">
-              <i class="fa-solid fa-triangle-exclamation"></i>
-              <div>Setiap kali menambah reseller baru di sini, Anda perlu <strong>copy snippet terbaru</strong> dan paste ke <code>index.html</code> di GitHub, lalu commit. Ini karena GitHub Pages adalah static hosting — database Firebase hanya dipakai oleh panel admin ini.</div>
+            <div class="alert alert-info">
+              <i class="fa-solid fa-circle-check"></i>
+              <div><strong>Landing page sudah terintegrasi Firestore.</strong> Setiap kali Anda menambah atau menghapus reseller di panel ini, perubahan akan <strong>otomatis aktif</strong> di landing page tanpa perlu edit kode apapun.</div>
             </div>
-            <button class="btn btn-primary" onclick="copyAllSnippets()"><i class="fa-solid fa-copy"></i> Copy Semua Snippet Reseller</button>
             <div id="all-snippets-preview" class="mt16"></div>
           </div>
         </div>
@@ -905,7 +905,7 @@ table.tbl td{padding:11px 14px;vertical-align:middle}
     </div>
     <div class="modal-body">
       <div style="font-size:13px;font-weight:700;color:var(--ink2);margin-bottom:6px" id="link-reseller-nama"></div>
-      <div style="font-size:12px;color:var(--mute);margin-bottom:14px">Copy link untuk dikirim ke reseller, atau copy snippet untuk dipaste ke index.html</div>
+      <div style="font-size:12px;color:var(--mute);margin-bottom:14px">Copy link untuk dikirim ke reseller. Link langsung aktif di landing page.</div>
 
       <div style="font-size:11px;font-weight:700;color:var(--mute);letter-spacing:.07em;text-transform:uppercase;margin-bottom:6px">🔗 Link Reseller</div>
       <div class="url-box">
@@ -913,22 +913,6 @@ table.tbl td{padding:11px 14px;vertical-align:middle}
         <button class="btn btn-secondary btn-xs btn-copy" id="btn-copy-link" onclick="copyLinkModal()"><i class="fa-solid fa-copy"></i> Copy</button>
       </div>
       <span id="link-url-raw" style="display:none"></span>
-
-      <div style="font-size:11px;font-weight:700;color:var(--mute);letter-spacing:.07em;text-transform:uppercase;margin:16px 0 6px">📋 Snippet untuk index.html</div>
-      <div class="code-blk">
-        <div class="code-bar">
-          <div class="code-dots"><span></span><span></span><span></span></div>
-          <div class="code-label">const RESELLERS = { … }</div>
-          <button class="btn btn-xs" style="background:#334155;color:#fff" id="btn-copy-snip" onclick="copySnipModal()"><i class="fa-solid fa-copy"></i> Copy Snippet</button>
-        </div>
-        <div class="code-body" id="link-snippet-display"></div>
-      </div>
-      <span id="link-snippet-raw" style="display:none"></span>
-
-      <div class="alert alert-warn mt16" style="margin-bottom:0">
-        <i class="fa-solid fa-triangle-exclamation"></i>
-        <div>Paste snippet ke <code>index.html</code> di bagian <code>const RESELLERS = {…}</code> sebelum <code>};</code> penutup, lalu commit ke GitHub.</div>
-      </div>
     </div>
   </div>
 </div>
@@ -1465,7 +1449,7 @@ function previewKuit() {
       toDetail : r2 ? 'WA: '+r2.wa : '',
       fromName : 'Emes EduTech',
       fromDetail:'Platform Ujian Digital',
-      items    : [{desc:'Komisi Penjualan Emes CBT – '+periode, qty:(jumlah||'—')+' penjualan', harga:nominal2}],
+      items    : [{desc:'Komisi Penjualan Emes CBT – '+periode, qty:(jumlah?jumlah+' penjualan':'—'), harga:nominal2}],
       total:nominal2, catatan:catatan2
     });
   }
@@ -1480,7 +1464,7 @@ function buildKuitHTML(d) {
   }).join('');
   return '<div class="kuitansi" id="kuitansi-el">'+
     '<div class="kuit-head">'+
-      '<div class="kuit-brand"><div class="kuit-brand-icon">🎓</div>'+
+      '<div class="kuit-brand"><div class="kuit-brand-icon"><img src="https://i.imgur.com/dYwR4Jp.png" style="width:24px;height:24px;object-fit:contain;filter:brightness(0) invert(1)"></div>'+
         '<div><div class="kuit-brand-name">Emes CBT</div><div class="kuit-brand-sub">Platform Ujian Digital</div></div></div>'+
       '<div class="kuit-num"><div class="kuit-num-label">No. Kuitansi</div>'+
         '<div class="kuit-num-val">'+escH(d.nomor)+'</div>'+
